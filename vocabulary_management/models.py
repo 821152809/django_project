@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.core.files.storage import FileSystemStorage
 
 
 class VocabularyManagement(models.Model):
@@ -68,3 +69,20 @@ class VocabularyMatch(models.Model):
     class Meta:
         verbose_name = "词汇匹配"
         verbose_name_plural = "词汇匹配"
+
+
+class VocabularyFileMatch(models.Model):
+    vocabulary_file = models.FileField(
+        blank=True,
+        default="",
+        storage=FileSystemStorage(location="{DIR_PATH}/".format(DIR_PATH="DIR_PATH")),
+        upload_to="vocabulary_management/vocabulary_file_dir",
+        verbose_name="词汇源文件",
+    )
+    result_file_path = models.CharField(
+        max_length=256, blank=True, null=False, verbose_name="匹配结果数据路径"
+    )
+
+    class Meta:
+        verbose_name = "词汇文件匹配"
+        verbose_name_plural = "词汇文件匹配"
